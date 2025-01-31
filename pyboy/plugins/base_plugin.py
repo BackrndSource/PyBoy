@@ -264,6 +264,9 @@ class PyBoyGameWrapper(PyBoyPlugin):
             if 0 <= _y < height and 0 <= _x < width:
                 tiles_matrix[_y][_x] = self.mapping[
                     s.tile_identifier] + self.sprite_offset # Adding offset to try to seperate sprites from tiles
+                if _y + 1 < height and len(s.tiles) == 2:
+                    tiles_matrix[_y + 1][_x] = self.mapping[s.tile_identifier + 1] # Adding second tile
+
         return tiles_matrix
 
     def game_area_mapping(self, mapping, sprite_offest):
