@@ -105,10 +105,10 @@ class PluginManager:
         # TODO: This is only for backward compatibility
         # gamewrapper
         if self.game_wrapper_super_mario_land_enabled: self.game_wrapper = self.game_wrapper_super_mario_land
-        if self.game_wrapper_tetris_enabled: self.game_wrapper =  self.game_wrapper_tetris
-        if self.game_wrapper_kirby_dream_land_enabled: self.game_wrapper =  self.game_wrapper_kirby_dream_land
-        if self.game_wrapper_pokemon_gen1_enabled: self.game_wrapper =  self.game_wrapper_pokemon_gen1
-        if self.game_wrapper_pokemon_pinball_enabled: self.game_wrapper =  self.game_wrapper_pokemon_pinball
+        if self.game_wrapper_tetris_enabled: self.game_wrapper = self.game_wrapper_tetris
+        if self.game_wrapper_kirby_dream_land_enabled: self.game_wrapper = self.game_wrapper_kirby_dream_land
+        if self.game_wrapper_pokemon_gen1_enabled: self.game_wrapper = self.game_wrapper_pokemon_gen1
+        if self.game_wrapper_pokemon_pinball_enabled: self.game_wrapper = self.game_wrapper_pokemon_pinball
         # gamewrapper end
 
         if self.game_wrapper is None:
