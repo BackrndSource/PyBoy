@@ -334,7 +334,7 @@ class PyBoy:
             Object for handling plugins in PyBoy
         """
 
-        self.game_wrapper = self._plugin_manager.gamewrapper()
+        self.game_wrapper = self._plugin_manager.game_wrapper
         """
         Provides an instance of a game-specific or generic wrapper. The game is detected by the cartridge's hard-coded
         game title (see `pyboy.PyBoy.cartridge_title`).

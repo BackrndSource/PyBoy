@@ -13,7 +13,7 @@ game_wrappers = [
 ]
 plugins = [
     "DisableInput", "AutoPause", "RecordReplay", "Rewind", "ScreenRecorder", "ScreenshotRecorder", "DebugPrompt"
-] + game_wrappers
+]
 all_plugins = windows + plugins
 
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
                 skip_lines(line_iter, "# plugins_enabled end")
 
-                for p in all_plugins:
+                for p in all_plugins + game_wrappers: # TODO: This is only for backward compatibility
                     p_name = to_snake_case(p)
                     lines.append(f"self.{p_name} = {p}(pyboy, mb, pyboy_argv)\n")
                     lines.append(f"self.{p_name}_enabled = self.{p_name}.enabled()\n")
@@ -104,9 +104,10 @@ if __name__ == "__main__":
 
                 skip_lines(line_iter, "# gamewrapper end")
 
-                for p in game_wrappers:
+                # TODO: This is only for backward compatibility
+                for p in game_wrappers: 
                     p_name = to_snake_case(p)
-                    lines.append(f"if self.{p_name}_enabled: return self.{p_name}\n")
+                    lines.append(f"if self.{p_name}_enabled: self.game_wrapper = self.{p_name}\n")
 
                 lines.append("# gamewrapper end\n")
                 out_lines.extend([indentation + l for l in lines])
@@ -177,7 +178,7 @@ if __name__ == "__main__":
 
                 skip_lines(line_iter, "# docs exclude end")
 
-                for p in (set(all_plugins) - set(game_wrappers)) | set(["manager", "manager_gen"]):
+                for p in set(all_plugins) | set(["manager", "manager_gen"]):
                     p_name = to_snake_case(p)
                     lines.append(f"\"{p_name}\": False,\n")
 

@@ -50,9 +50,8 @@ def parser_arguments():
 class PluginManager:
     def __init__(self, pyboy, mb, pyboy_argv):
         self.pyboy = pyboy
+        self.game_wrapper = None
 
-        self.generic_game_wrapper = PyBoyGameWrapper(pyboy, mb, pyboy_argv)
-        self.generic_game_wrapper_enabled = False
         # plugins_enabled
         self.window_sdl2 = WindowSDL2(pyboy, mb, pyboy_argv)
         self.window_sdl2_enabled = self.window_sdl2.enabled()
@@ -88,16 +87,17 @@ class PluginManager:
         self.game_wrapper_pokemon_pinball_enabled = self.game_wrapper_pokemon_pinball.enabled()
         # plugins_enabled end
 
-    def gamewrapper(self):
+        # TODO: This is only for backward compatibility
         # gamewrapper
-        if self.game_wrapper_super_mario_land_enabled: return self.game_wrapper_super_mario_land
-        if self.game_wrapper_tetris_enabled: return self.game_wrapper_tetris
-        if self.game_wrapper_kirby_dream_land_enabled: return self.game_wrapper_kirby_dream_land
-        if self.game_wrapper_pokemon_gen1_enabled: return self.game_wrapper_pokemon_gen1
-        if self.game_wrapper_pokemon_pinball_enabled: return self.game_wrapper_pokemon_pinball
+        if self.game_wrapper_super_mario_land_enabled: self.game_wrapper = self.game_wrapper_super_mario_land
+        if self.game_wrapper_tetris_enabled: self.game_wrapper =  self.game_wrapper_tetris
+        if self.game_wrapper_kirby_dream_land_enabled: self.game_wrapper =  self.game_wrapper_kirby_dream_land
+        if self.game_wrapper_pokemon_gen1_enabled: self.game_wrapper =  self.game_wrapper_pokemon_gen1
+        if self.game_wrapper_pokemon_pinball_enabled: self.game_wrapper =  self.game_wrapper_pokemon_pinball
         # gamewrapper end
-        self.generic_game_wrapper_enabled = True
-        return self.generic_game_wrapper
+
+        if self.game_wrapper is None:
+            self.game_wrapper = PyBoyGameWrapper(pyboy, mb, pyboy_argv)
 
     def handle_events(self, events):
         # foreach windows events = [].handle_events(events)
@@ -125,19 +125,8 @@ class PluginManager:
             events = self.screenshot_recorder.handle_events(events)
         if self.debug_prompt_enabled:
             events = self.debug_prompt.handle_events(events)
-        if self.game_wrapper_super_mario_land_enabled:
-            events = self.game_wrapper_super_mario_land.handle_events(events)
-        if self.game_wrapper_tetris_enabled:
-            events = self.game_wrapper_tetris.handle_events(events)
-        if self.game_wrapper_kirby_dream_land_enabled:
-            events = self.game_wrapper_kirby_dream_land.handle_events(events)
-        if self.game_wrapper_pokemon_gen1_enabled:
-            events = self.game_wrapper_pokemon_gen1.handle_events(events)
-        if self.game_wrapper_pokemon_pinball_enabled:
-            events = self.game_wrapper_pokemon_pinball.handle_events(events)
         # foreach end
-        if self.generic_game_wrapper_enabled:
-            events = self.generic_game_wrapper.handle_events(events)
+        events = self.game_wrapper.handle_events(events)
         return events
 
     def post_tick(self):
@@ -156,19 +145,8 @@ class PluginManager:
             self.screenshot_recorder.post_tick()
         if self.debug_prompt_enabled:
             self.debug_prompt.post_tick()
-        if self.game_wrapper_super_mario_land_enabled:
-            self.game_wrapper_super_mario_land.post_tick()
-        if self.game_wrapper_tetris_enabled:
-            self.game_wrapper_tetris.post_tick()
-        if self.game_wrapper_kirby_dream_land_enabled:
-            self.game_wrapper_kirby_dream_land.post_tick()
-        if self.game_wrapper_pokemon_gen1_enabled:
-            self.game_wrapper_pokemon_gen1.post_tick()
-        if self.game_wrapper_pokemon_pinball_enabled:
-            self.game_wrapper_pokemon_pinball.post_tick()
         # foreach end
-        if self.generic_game_wrapper_enabled:
-            self.generic_game_wrapper.post_tick()
+        self.game_wrapper.post_tick()
 
         self._post_tick_windows()
 
@@ -243,20 +221,13 @@ class PluginManager:
             title += self.screenshot_recorder.window_title()
         if self.debug_prompt_enabled:
             title += self.debug_prompt.window_title()
-        if self.game_wrapper_super_mario_land_enabled:
-            title += self.game_wrapper_super_mario_land.window_title()
-        if self.game_wrapper_tetris_enabled:
-            title += self.game_wrapper_tetris.window_title()
-        if self.game_wrapper_kirby_dream_land_enabled:
-            title += self.game_wrapper_kirby_dream_land.window_title()
-        if self.game_wrapper_pokemon_gen1_enabled:
-            title += self.game_wrapper_pokemon_gen1.window_title()
-        if self.game_wrapper_pokemon_pinball_enabled:
-            title += self.game_wrapper_pokemon_pinball.window_title()
         # foreach end
+        title += self.game_wrapper.window_title()
+
         return title
 
     def stop(self):
+        # TODO: add tests ?? 
         # foreach windows [].stop()
         if self.window_sdl2_enabled:
             self.window_sdl2.stop()
@@ -282,19 +253,8 @@ class PluginManager:
             self.screenshot_recorder.stop()
         if self.debug_prompt_enabled:
             self.debug_prompt.stop()
-        if self.game_wrapper_super_mario_land_enabled:
-            self.game_wrapper_super_mario_land.stop()
-        if self.game_wrapper_tetris_enabled:
-            self.game_wrapper_tetris.stop()
-        if self.game_wrapper_kirby_dream_land_enabled:
-            self.game_wrapper_kirby_dream_land.stop()
-        if self.game_wrapper_pokemon_gen1_enabled:
-            self.game_wrapper_pokemon_gen1.stop()
-        if self.game_wrapper_pokemon_pinball_enabled:
-            self.game_wrapper_pokemon_pinball.stop()
         # foreach end
-        if self.generic_game_wrapper_enabled:
-            self.generic_game_wrapper.stop()
+        self.game_wrapper.stop()
 
     def handle_breakpoint(self):
         if self.debug_prompt_enabled:
