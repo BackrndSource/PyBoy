@@ -4,6 +4,7 @@
 #
 
 from pyboy.plugins.base_plugin import PyBoyGameWrapper
+from importlib_metadata import entry_points
 
 # imports
 from pyboy.plugins.window_sdl2 import WindowSDL2 # isort:skip
@@ -86,6 +87,20 @@ class PluginManager:
         self.game_wrapper_pokemon_pinball = GameWrapperPokemonPinball(pyboy, mb, pyboy_argv)
         self.game_wrapper_pokemon_pinball_enabled = self.game_wrapper_pokemon_pinball.enabled()
         # plugins_enabled end
+
+        for gamewrapper_plugin in entry_points(group="pyboy_gamewrapper_plugins"):
+
+            game_wrapper = gamewrapper_plugin.load()(pyboy, mb, pyboy_argv)
+
+            if game_wrapper.cartridge_title is None:
+                print("Found generic gamewrapper (" + gamewrapper_plugin.name + ")")
+                self.game_wrapper = game_wrapper
+            else:
+                print("Found gamewrapper (" + gamewrapper_plugin.name + ") for " + game_wrapper.cartridge_title)
+                if game_wrapper.enabled():
+                    print("Enabled gamewrapper: " + gamewrapper_plugin.name)
+                    self.game_wrapper = game_wrapper
+                    break
 
         # TODO: This is only for backward compatibility
         # gamewrapper
