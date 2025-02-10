@@ -158,7 +158,7 @@ def replay(
         with open(replay, "wb") as f:
             f.write(
                 zlib.compress(
-                    json.dumps((pyboy._plugin_manager.record_replay.recorded_input, b64_romhash, b64_state)).encode()
+                    json.dumps((pyboy._plugin_manager.get_plugin("RecordReplay").recorded_input, b64_romhash, b64_state)).encode()
                 )
             )
 
