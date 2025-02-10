@@ -78,14 +78,14 @@ cdef class TileViewWindow(BaseDebugWindow):
     cdef uint8_t[:,:] tilecache # Fixing Cython locals
     cdef uint32_t[:] palette_rgb # Fixing Cython locals
     @cython.locals(mem_offset=uint16_t, tile_index=int, tile_column=int, tile_row=int)
-    cdef void post_tick(self) noexcept
+    cpdef void post_tick(self) noexcept
 
     # scanlineparameters=uint8_t[:,:],
     @cython.locals(x=int, y=int, xx=int, yy=int, row=int, column=int)
     cdef void draw_overlay(self) noexcept
 
     @cython.locals(tile_x=int, tile_y=int, tile_identifier=int)
-    cdef list handle_events(self, list) noexcept
+    cpdef list handle_events(self, list)
 
 
 cdef class TileDataWindow(BaseDebugWindow):
@@ -94,10 +94,10 @@ cdef class TileDataWindow(BaseDebugWindow):
     cdef uint8_t[:,:] tilecache # Fixing Cython locals
     cdef uint32_t[:] palette_rgb # Fixing Cython locals
     @cython.locals(t=int, xx=int, yy=int)
-    cdef void post_tick(self) noexcept
+    cpdef void post_tick(self) noexcept
 
     @cython.locals(tile_x=int, tile_y=int, tile_identifier=int)
-    cdef list handle_events(self, list) noexcept
+    cpdef list handle_events(self, list)
 
     @cython.locals(t=MarkedTile, column=int, row=int)
     cdef void draw_overlay(self) noexcept
@@ -105,7 +105,7 @@ cdef class TileDataWindow(BaseDebugWindow):
 
 cdef class SpriteWindow(BaseDebugWindow):
     @cython.locals(tile_x=int, tile_y=int, sprite_identifier=int, sprite=object)
-    cdef list handle_events(self, list) noexcept
+    cpdef list handle_events(self, list)
 
     @cython.locals(t=MarkedTile, xx=int, yy=int, sprite=object, i=int)
     cdef void draw_overlay(self) noexcept
@@ -118,7 +118,7 @@ cdef class SpriteWindow(BaseDebugWindow):
 
 cdef class SpriteViewWindow(BaseDebugWindow):
     @cython.locals(t=int, x=int, y=int)
-    cdef void post_tick(self) noexcept
+    cpdef void post_tick(self) noexcept
 
     @cython.locals(t=MarkedTile, sprite=object, i=int)
     cdef void draw_overlay(self) noexcept

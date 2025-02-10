@@ -29,8 +29,9 @@ cdef class PyBoyPlugin:
     cpdef str window_title(self)
     cpdef void stop(self) noexcept
 
+
 cdef class PyBoyDebugPlugin(PyBoyPlugin):
-    cdef void handle_breakpoint(self)
+    cpdef void handle_breakpoint(self) noexcept
 
 
 cdef class PyBoyWindowPlugin(PyBoyPlugin):
@@ -39,7 +40,7 @@ cdef class PyBoyWindowPlugin(PyBoyPlugin):
     cdef bint enable_title
     cdef Renderer renderer
     cdef int64_t _ftime
-    
+
     @cython.locals(now=int64_t, delay=int64_t)
     cpdef bint frame_limiter(self, int) noexcept
     cpdef void set_title(self, str) noexcept
@@ -58,7 +59,7 @@ cdef class PyBoyGameWrapper(PyBoyPlugin):
     cdef array _cached_game_area_tiles_raw
     cdef object _cached_game_area_tiles
     @cython.locals(xx=int, yy=int, width=int, height=int, SCX=int, SCY=int, _x=int, _y=int)
-    cdef cnp.ndarray[cnp.uint32_t, ndim=2] _game_area_tiles(self) noexcept
+    cpdef cnp.ndarray[cnp.uint32_t, ndim=2] _game_area_tiles(self)
 
     cdef bint game_area_follow_scxy
     cdef tuple game_area_section
