@@ -19,8 +19,7 @@ from pyboy.api.screen import Screen
 from pyboy.api.tilemap import TileMap
 from pyboy.logging import get_logger
 from pyboy.logging import log_level as _log_level
-from pyboy.plugins.manager import PluginManager
-from pyboy.plugins.loader import PluginLoader
+from pyboy.plugin_manager import PluginManager, keyword_arguments, window_names
 from pyboy.utils import IntIOWrapper, WindowEvent
 
 from .api import Sprite, Tile, constants
@@ -112,7 +111,7 @@ class PyBoy:
             )
             window = kwargs.pop("window_type")
 
-        if window not in ["SDL2", "OpenGL", "null", "headless", "dummy"]:
+        if window not in list(window_names()) + ["headless", "dummy"]:
             raise KeyError(f'Unknown window type: {window}. Use "SDL2", "OpenGL", or "null"')
 
         kwargs["window"] = window
@@ -150,12 +149,10 @@ class PyBoy:
             cgb,
             randomize=randomize,
         )
-        
-        self._plugin_loader = PluginLoader()
 
         # Validate all kwargs
         for k, v in kwargs.items():
-            if k not in defaults and k not in self._plugin_loader.keyword_arguments():
+            if k not in defaults and k not in keyword_arguments():
                 logger.error("Unknown keyword argument: %s", k)
                 raise KeyError(f"Unknown keyword argument: {k}")
 
@@ -326,11 +323,11 @@ class PyBoy:
 
         self._hooks = {}
 
-        self._plugin_manager = PluginManager(self, self.mb, self._plugin_loader, kwargs)
+        self._plugin_manager = PluginManager(self, self.mb, kwargs)
         """
         Returns
         -------
-        `pyboy.plugins.manager.PluginManager`:
+        `pyboy.plugin_manager.PluginManager`:
             Object for handling plugins in PyBoy
         """
 

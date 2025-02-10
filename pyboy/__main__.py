@@ -9,8 +9,8 @@ import copy
 import os
 
 import pyboy
-from pyboy import PyBoy, core, utils
-from pyboy.plugins.loader import PluginLoader
+from pyboy import PyBoy
+from pyboy.plugin_manager import external_plugin_names, parser_arguments, window_names
 from pyboy.pyboy import defaults
 
 logger = pyboy.logging.get_logger(__name__)
@@ -37,9 +37,11 @@ def valid_file_path(path):
     return path
 
 
+_ext_plugin_names = external_plugin_names()
 parser = argparse.ArgumentParser(
     description="PyBoy -- Game Boy emulator written in Python",
-    epilog="Warning: Features marked with (internal use) might be subject to change.",
+    epilog=(f"External plugins loaded: {_ext_plugin_names}\n\n" if _ext_plugin_names else "")
+    + "Warning: Features marked with (internal use) might be subject to change.",
 )
 parser.add_argument("ROM", type=valid_file_path, help="Path to a Game Boy compatible ROM file")
 parser.add_argument("-b", "--bootrom", dest="bootrom", type=valid_file_path, help="Path to a boot-ROM file")
@@ -81,7 +83,7 @@ parser.add_argument(
     "--window",
     default=defaults["window"],
     type=str,
-    choices=["SDL2", "OpenGL", "null"],
+    choices=list(window_names()),
     help="Specify window-type to use",
 )
 parser.add_argument("-s", "--scale", default=defaults["scale"], type=int, help="The scaling multiplier for the window")
@@ -101,7 +103,7 @@ gameboy_type_parser.add_argument(
     "--cgb", action="store_const", const=True, dest="cgb", help="Force emulator to run as Game Boy Color"
 )
 
-for arguments in PluginLoader().parser_arguments():
+for arguments in parser_arguments():
     for a in arguments:
         *args, kwargs = a
         if args[0] not in parser._option_string_actions:

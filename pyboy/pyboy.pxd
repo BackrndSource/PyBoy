@@ -15,8 +15,7 @@ from pyboy.api.tilemap cimport TileMap
 from pyboy.core.cpu cimport CPU
 from pyboy.core.mb cimport Motherboard
 from pyboy.logging.logging cimport Logger
-from pyboy.plugins.manager cimport PluginManager
-from pyboy.plugins.loader cimport PluginLoader
+from pyboy.plugin_manager cimport PluginManager
 from pyboy.utils cimport IntIOInterface, IntIOWrapper
 
 
@@ -40,7 +39,6 @@ cdef class PyBoyMemoryView:
 cdef class PyBoy:
     cdef Motherboard mb
     cdef readonly PluginManager _plugin_manager
-    cdef readonly PluginLoader _plugin_loader
     cdef readonly uint64_t frame_count
     cdef readonly str gamerom
     cdef readonly bint paused
