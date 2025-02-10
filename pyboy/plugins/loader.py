@@ -54,7 +54,6 @@ class PluginLoader:
         for plugin_entry_point in entry_points(group=self.entry_point_group):
             plugin_cls = plugin_entry_point.load()
             if issubclass(plugin_cls, PyBoyPlugin):
-                print("Plugin found  (" + plugin_entry_point.name + ")")
                 self.plugins.append(plugin_cls)
 
     def parser_arguments(self):
