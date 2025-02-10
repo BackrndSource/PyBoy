@@ -24,11 +24,10 @@ cdef class PyBoyPlugin:
     cdef bint cgb
     cdef dict pyboy_argv
     @cython.locals(event=WindowEvent)
-    cdef list handle_events(self, list) noexcept
-    cdef void post_tick(self) noexcept
-    cdef str window_title(self) noexcept
-    cdef void stop(self) noexcept
-
+    cpdef list handle_events(self, list)
+    cpdef void post_tick(self) noexcept
+    cpdef str window_title(self)
+    cpdef void stop(self) noexcept
 
 cdef class PyBoyDebugPlugin(PyBoyPlugin):
     cdef void handle_breakpoint(self)
