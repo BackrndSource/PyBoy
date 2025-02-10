@@ -7,13 +7,13 @@ import os
 import re
 
 import pyboy
-from pyboy.plugins.base_plugin import PyBoyPlugin
+from pyboy.plugins.base_plugin import PyBoyDebugPlugin
 from pyboy.utils import WindowEvent
 
 logger = pyboy.logging.get_logger(__name__)
 
 
-class DebugPrompt(PyBoyPlugin):
+class DebugPrompt(PyBoyDebugPlugin):
     argv = [("--breakpoints", {"type": str, "help": "Add breakpoints on start-up (internal use)"})]
 
     def __init__(self, pyboy, mb, pyboy_argv):

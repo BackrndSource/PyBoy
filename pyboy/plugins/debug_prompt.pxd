@@ -4,11 +4,10 @@
 #
 
 from pyboy.logging.logging cimport Logger
-from pyboy.plugins.base_plugin cimport PyBoyPlugin
+from pyboy.plugins.base_plugin cimport PyBoyDebugPlugin
 
 
 cdef Logger logger
 
-cdef class DebugPrompt(PyBoyPlugin):
+cdef class DebugPrompt(PyBoyDebugPlugin):
     cdef dict rom_symbols
-    cdef void handle_breakpoint(self)
