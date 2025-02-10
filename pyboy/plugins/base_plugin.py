@@ -59,7 +59,8 @@ class PyBoyPlugin:
     def stop(self):
         pass
 
-    def enabled(self):
+    @classmethod
+    def enabled(cls, pyboy, pyboy_argv):
         return True
 
 class PyBoyDebugPlugin(PyBoyPlugin):
@@ -68,13 +69,12 @@ class PyBoyDebugPlugin(PyBoyPlugin):
         pass
 
 class PyBoyWindowPlugin(PyBoyPlugin):
+    name = None
+    
     def __init__(self, pyboy, mb, pyboy_argv, *args, **kwargs):
         super().__init__(pyboy, mb, pyboy_argv, *args, **kwargs)
 
         self._ftime = time.perf_counter_ns()
-
-        if not self.enabled():
-            return
 
         scale = pyboy_argv.get("scale")
         self.scale = scale
@@ -150,8 +150,9 @@ class PyBoyGameWrapper(PyBoyPlugin):
         self.tilemap_background = self.pyboy.tilemap_background
         self.tilemap_window = self.pyboy.tilemap_window
 
-    def enabled(self):
-        return self.cartridge_title is None or self.pyboy.cartridge_title == self.cartridge_title
+    @classmethod
+    def enabled(cls, pyboy, pyboy_argv):
+        return cls.cartridge_title is None or pyboy.cartridge_title == cls.cartridge_title
 
     def post_tick(self):
         self._tile_cache_invalid = True

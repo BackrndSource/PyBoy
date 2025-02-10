@@ -32,6 +32,8 @@ import pyboy
 
 logger = pyboy.logging.get_logger(__name__)
 
+_export_plugins = ["Debug"]
+
 # Mask colors:
 COLOR = 0x00000000
 # MASK = 0x00C0C000
@@ -79,9 +81,6 @@ class Debug(PyBoyWindowPlugin):
 
     def __init__(self, pyboy, mb, pyboy_argv):
         super().__init__(pyboy, mb, pyboy_argv)
-
-        if not self.enabled():
-            return
 
         self.cgb = mb.cartridge_cgb
 
@@ -215,8 +214,9 @@ class Debug(PyBoyWindowPlugin):
         self.spriteview.stop()
         self.memory.stop()
 
-    def enabled(self):
-        if self.pyboy_argv.get("debug"):
+    @classmethod
+    def enabled(cls, pyboy, pyboy_argv):
+        if pyboy_argv.get("debug"):
             if not sdl2:
                 logger.error("Failed to import sdl2, needed for debug window")
                 return False

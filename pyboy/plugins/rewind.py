@@ -31,10 +31,7 @@ class Rewind(PyBoyPlugin):
         super().__init__(*args)
 
         self.rewind_speed = 1.0
-        if self.enabled():
-            self.rewind_buffer = DeltaFixedAllocBuffers()
-        else:
-            self.rewind_buffer = None
+        self.rewind_buffer = DeltaFixedAllocBuffers()
 
     def post_tick(self):
         if not self.pyboy.paused:
@@ -78,8 +75,9 @@ class Rewind(PyBoyPlugin):
             self.pyboy.set_emulation_speed(int(self.rewind_speed))
         return events
 
-    def enabled(self):
-        return self.pyboy_argv.get("rewind")
+    @classmethod
+    def enabled(cls, pyboy, pyboy_argv):
+        return pyboy_argv.get("rewind")
 
 
 ##############################################################

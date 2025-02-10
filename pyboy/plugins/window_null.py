@@ -11,11 +11,10 @@ logger = pyboy.logging.get_logger(__name__)
 
 
 class WindowNull(PyBoyWindowPlugin):
+    name = "null"
+
     def __init__(self, pyboy, mb, pyboy_argv):
         super().__init__(pyboy, mb, pyboy_argv)
-
-        if not self.enabled():
-            return
 
         if pyboy_argv.get("window") in ["headless", "dummy"]:
             logger.error(
@@ -24,8 +23,9 @@ class WindowNull(PyBoyWindowPlugin):
 
         pyboy.set_emulation_speed(0)
 
-    def enabled(self):
-        return self.pyboy_argv.get("window") in ["null", "headless", "dummy"]
+    @classmethod
+    def enabled(cls, pyboy, pyboy_argv):
+        return pyboy_argv.get("window") in [cls.name, "headless", "dummy"]
 
     def set_title(self, title):
         logger.debug(title)

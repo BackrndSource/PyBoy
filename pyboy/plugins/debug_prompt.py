@@ -19,9 +19,6 @@ class DebugPrompt(PyBoyDebugPlugin):
     def __init__(self, pyboy, mb, pyboy_argv):
         super().__init__(pyboy, mb, pyboy_argv)
 
-        if not self.enabled():
-            return
-
         self.rom_symbols = pyboy._load_symbols()
 
         for _b in (self.pyboy_argv.get("breakpoints") or "").split(","):
@@ -37,8 +34,9 @@ class DebugPrompt(PyBoyDebugPlugin):
                 self.mb.breakpoint_add(bank, addr)
                 logger.info("Added breakpoint for address or label: %s", b)
 
-    def enabled(self):
-        return self.pyboy_argv.get("breakpoints")
+    @classmethod
+    def enabled(cls, pyboy, pyboy_argv):
+        return pyboy_argv.get("breakpoints")
 
     def parse_bank_addr_sym_label(self, command):
         if ":" in command:

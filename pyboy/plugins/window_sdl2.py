@@ -152,11 +152,11 @@ def sdl2_event_pump(events):
 
 
 class WindowSDL2(PyBoyWindowPlugin):
+    name = "SDL2"
+    
     def __init__(self, pyboy, mb, pyboy_argv):
         super().__init__(pyboy, mb, pyboy_argv)
 
-        if not self.enabled():
-            return
         sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO | sdl2.SDL_INIT_GAMECONTROLLER)
 
         self._window = sdl2.SDL_CreateWindow(
@@ -197,8 +197,9 @@ class WindowSDL2(PyBoyWindowPlugin):
         sdl2.SDL_RenderPresent(self._sdlrenderer)
         sdl2.SDL_RenderClear(self._sdlrenderer)
 
-    def enabled(self):
-        if self.pyboy_argv.get("window") in ("SDL2", None):
+    @classmethod
+    def enabled(cls, pyboy, pyboy_argv):
+        if pyboy_argv.get("window") in (cls.name, None):
             if not sdl2:
                 logger.error("Failed to import sdl2, needed for sdl2 window")
                 return False  # Disable, or raise exception?
