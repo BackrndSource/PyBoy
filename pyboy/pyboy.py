@@ -19,7 +19,8 @@ from pyboy.api.screen import Screen
 from pyboy.api.tilemap import TileMap
 from pyboy.logging import get_logger
 from pyboy.logging import log_level as _log_level
-from pyboy.plugins.manager import PluginManager, parser_arguments
+from pyboy.plugins.manager import PluginManager
+from pyboy.plugins.loader import PluginLoader
 from pyboy.utils import IntIOWrapper, WindowEvent
 
 from .api import Sprite, Tile, constants
@@ -146,16 +147,12 @@ class PyBoy:
             cgb,
             randomize=randomize,
         )
+        
+        self._plugin_loader = PluginLoader()
 
         # Validate all kwargs
-        plugin_manager_keywords = []
-        for x in parser_arguments():
-            if not x:
-                continue
-            plugin_manager_keywords.extend(z.strip("-").replace("-", "_") for y in x for z in y[:-1])
-
         for k, v in kwargs.items():
-            if k not in defaults and k not in plugin_manager_keywords:
+            if k not in defaults and k not in self._plugin_loader.keyword_arguments():
                 logger.error("Unknown keyword argument: %s", k)
                 raise KeyError(f"Unknown keyword argument: {k}")
 
@@ -326,7 +323,7 @@ class PyBoy:
 
         self._hooks = {}
 
-        self._plugin_manager = PluginManager(self, self.mb, kwargs)
+        self._plugin_manager = PluginManager(self, self.mb, self._plugin_loader, kwargs)
         """
         Returns
         -------
