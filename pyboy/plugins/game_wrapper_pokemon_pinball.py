@@ -405,9 +405,6 @@ class GameWrapperPokemonPinball(PyBoyGameWrapper):
 
         super().__init__(*args, game_area_section=(0, 0) + self.shape, game_area_follow_scxy=True, **kwargs)
 
-        if not self.enabled():
-            return
-
         self._add_hooks()
 
     def _update_pokedex(self):
