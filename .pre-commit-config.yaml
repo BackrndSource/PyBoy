@@ -1,4 +1,4 @@
-exclude: (opcodes.py|manager.py|manager.pxd)
+exclude: (opcodes.py)
 repos:
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.8.0
