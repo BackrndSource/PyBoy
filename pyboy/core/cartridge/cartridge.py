@@ -43,7 +43,7 @@ def validate_checksum(rombanks):
     x = 0
     for m in range(0x134, 0x14D):
         x = x - rombanks[0, m] - 1
-        x &= 0xff
+        x &= 0xFF
     return rombanks[0, 0x14D] == x
 
 
@@ -64,7 +64,7 @@ def load_romfile(filename):
     return memoryview(romdata).cast("B", shape=(len(romdata) // banksize, banksize))
 
 
-# yapf: disable
+# fmt: off
 CARTRIDGE_TABLE = {
     #      MBC     , SRAM  , Battery , RTC
     0x00: (ROMOnly , False , False   , False) , # ROM
@@ -87,12 +87,12 @@ CARTRIDGE_TABLE = {
     0x1D: (MBC5    , True  , False   , False) , # MBC5+RUMBLE+RAM
     0x1E: (MBC5    , True  , True    , False) , # MBC5+RUMBLE+RAM+BATT
 }
-# yapf: enable
+# fmt: on
 
 # Number of external 8KB banks in the cartridge. Taken from Pan Docs
 EXTERNAL_RAM_TABLE = {
-    0x00: 1, # We wrongfully allocate some RAM, to help Cython
-    0x01: 1, # Only supposed to be 2KB, but we allocate 8KB.
+    0x00: 1,  # We wrongfully allocate some RAM, to help Cython
+    0x01: 1,  # Only supposed to be 2KB, but we allocate 8KB.
     0x02: 1,
     0x03: 4,
     0x04: 16,

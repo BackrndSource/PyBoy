@@ -14,7 +14,15 @@ game_wrappers = [
     "GameWrapperPokemonGen1",
     "GameWrapperPokemonPinball",
 ]
-plugins = ["DisableInput", "AutoPause", "RecordReplay", "Rewind", "ScreenRecorder", "ScreenshotRecorder", "DebugPrompt"]
+plugins = [
+    "DisableInput",
+    "AutoPause",
+    "RecordReplay",
+    "Rewind",
+    "ScreenRecorder",
+    "ScreenshotRecorder",
+    "DebugPrompt",
+]
 all_plugins = windows + plugins + game_wrappers
 
 
@@ -52,7 +60,6 @@ if __name__ == "__main__":
                 lines.append("# plugins_available end\n")
                 out_lines.extend([indentation + l for l in lines])
             elif line.strip().startswith("# imports"):
-
                 lines = [line.strip() + "\n"]
                 indentation = " " * line.index("# imports")
 
@@ -80,7 +87,6 @@ if __name__ == "__main__":
 
             # Find place to inject
             if line.strip().startswith("# docs exclude"):
-
                 lines = [line.strip() + "\n"]
                 indentation = " " * line.index("# docs exclude")
 
