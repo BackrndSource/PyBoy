@@ -61,6 +61,10 @@ class PyBoyPlugin:
     def enabled(self):
         return True
 
+class PyBoyDebugPlugin(PyBoyPlugin):
+    
+    def handle_breakpoint(self):
+        pass
 
 class PyBoyWindowPlugin(PyBoyPlugin):
     def __init__(self, pyboy, mb, pyboy_argv, *args, **kwargs):

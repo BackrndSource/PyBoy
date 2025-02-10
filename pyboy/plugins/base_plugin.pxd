@@ -31,8 +31,11 @@ cdef class PyBoyPlugin:
     cpdef bint enabled(self) noexcept
 
 
-cdef class PyBoyWindowPlugin(PyBoyPlugin):
+cdef class PyBoyDebugPlugin(PyBoyPlugin):
+    cdef void handle_breakpoint(self)
 
+
+cdef class PyBoyWindowPlugin(PyBoyPlugin):
     cdef int scale
     cdef int[2] _scaledresolution
     cdef bint enable_title
