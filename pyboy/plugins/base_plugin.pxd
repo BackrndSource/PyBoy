@@ -38,10 +38,11 @@ cdef class PyBoyWindowPlugin(PyBoyPlugin):
     cdef int[2] _scaledresolution
     cdef bint enable_title
     cdef Renderer renderer
-
     cdef int64_t _ftime
-    cdef bint frame_limiter(self, int) noexcept
-    cdef void set_title(self, str) noexcept
+    
+    @cython.locals(now=int64_t, delay=int64_t)
+    cpdef bint frame_limiter(self, int) noexcept
+    cpdef void set_title(self, str) noexcept
 
 
 cdef class PyBoyGameWrapper(PyBoyPlugin):
