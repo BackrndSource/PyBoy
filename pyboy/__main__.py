@@ -10,7 +10,7 @@ import os
 
 import pyboy
 from pyboy import PyBoy, core, utils
-from pyboy.plugins.manager import parser_arguments
+from pyboy.plugins.loader import PluginLoader
 from pyboy.pyboy import defaults
 
 logger = pyboy.logging.get_logger(__name__)
@@ -101,7 +101,7 @@ gameboy_type_parser.add_argument(
     "--cgb", action="store_const", const=True, dest="cgb", help="Force emulator to run as Game Boy Color"
 )
 
-for arguments in parser_arguments():
+for arguments in PluginLoader().parser_arguments():
     for a in arguments:
         *args, kwargs = a
         if args[0] not in parser._option_string_actions:
