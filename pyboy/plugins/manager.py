@@ -65,6 +65,7 @@ class PluginManager:
                 return
 
     def window_title(self):
+        title = ""
         for plugin in (
             self.window_plugins_enabled + self.plugins_enabled + self.debug_plugins_enabled + [self.game_wrapper]
         ):
