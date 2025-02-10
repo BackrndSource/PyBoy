@@ -11,6 +11,13 @@ from pyboy.plugins.window_null import WindowNull
 from pyboy.plugins.debug import Debug
 
 
+def test_plugin_manager_basics(default_rom):
+    pyboy = PyBoy(default_rom, window="null")
+    pyboy.set_emulation_speed(0)
+    pyboy.tick(60, False)
+    pyboy.stop()
+
+
 def test_plugin_manager_generic_game_wrapper(default_rom):
     pyboy = PyBoy(default_rom, window="null")
     generic_wrapper = pyboy._plugin_manager.game_wrapper
