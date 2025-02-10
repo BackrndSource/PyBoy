@@ -28,7 +28,6 @@ cdef class PyBoyPlugin:
     cdef void post_tick(self) noexcept
     cdef str window_title(self) noexcept
     cdef void stop(self) noexcept
-    cpdef bint enabled(self) noexcept
 
 
 cdef class PyBoyDebugPlugin(PyBoyPlugin):
