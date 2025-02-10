@@ -19,10 +19,10 @@ cdef class PluginManager:
     cpdef PyBoyPlugin get_plugin(self, str)
 
     cdef list handle_events(self, list)
-    cdef void post_tick(self)
-    cdef void _post_tick_windows(self)
-    cdef void _set_title(self)
-    cdef void frame_limiter(self, int)
-    cdef str window_title(self)
-    cdef void stop(self)
-    cdef void handle_breakpoint(self)
+    cdef void post_tick(self) noexcept
+    cdef void _post_tick_windows(self) noexcept
+    cdef void _set_title(self) noexcept
+    cdef void frame_limiter(self, int) noexcept
+    cdef str window_title(self) 
+    cdef void stop(self) noexcept
+    cdef void handle_breakpoint(self) noexcept
