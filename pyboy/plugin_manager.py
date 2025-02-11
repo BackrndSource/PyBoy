@@ -27,7 +27,7 @@ for module in builtin_modules + [m.load() for m in external_modules]:
     if hasattr(module, "_export_plugins"):
         plugin_names = getattr(module, "_export_plugins")
     else:
-        plugin_names = [x for x in dir(module) if not x.startswith("_")]
+        plugin_names = [attr for attr in dir(module) if not attr.startswith("_")]
 
     for attr_name in plugin_names:
         module_cls = getattr(module, attr_name)
