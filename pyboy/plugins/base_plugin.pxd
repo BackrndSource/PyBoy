@@ -70,6 +70,8 @@ cdef class PyBoyGameWrapper(PyBoyPlugin):
     cpdef list _sprites_on_screen(self)
 
     cdef object saved_state
+    
+    cpdef void post_tick(self) noexcept
 
     cpdef void start_game(self, timer_div=*) noexcept
     cpdef void reset_game(self, timer_div=*) noexcept
