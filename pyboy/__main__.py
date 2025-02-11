@@ -10,7 +10,7 @@ import os
 
 import pyboy
 from pyboy import PyBoy
-from pyboy.plugin_manager import external_plugin_names, parser_arguments, window_names
+from pyboy.plugin_manager import external_module_names, parser_arguments, window_names
 from pyboy.pyboy import defaults
 
 logger = pyboy.logging.get_logger(__name__)
@@ -37,10 +37,10 @@ def valid_file_path(path):
     return path
 
 
-_ext_plugin_names = external_plugin_names()
+_ext_module_names = external_module_names()
 parser = argparse.ArgumentParser(
     description="PyBoy -- Game Boy emulator written in Python",
-    epilog=(f"External plugins loaded: {_ext_plugin_names}\n\n" if _ext_plugin_names else "")
+    epilog=(f"External modules loaded: {_ext_module_names}\n\n" if _ext_module_names else "")
     + "Warning: Features marked with (internal use) might be subject to change.",
 )
 parser.add_argument("ROM", type=valid_file_path, help="Path to a Game Boy compatible ROM file")
