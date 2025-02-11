@@ -65,6 +65,9 @@ cdef class BaseDebugWindow(PyBoyWindowPlugin):
     @cython.locals(i=int, tw=int, th=int, xx=int, yy=int)
     cdef void mark_tile(self, int, int, uint32_t, int, int, bint) noexcept
 
+    @cython.locals(event=WindowEvent)
+    cpdef list handle_events(self, list) noexcept
+
 
 cdef class TileViewWindow(BaseDebugWindow):
     cdef int scanline_x

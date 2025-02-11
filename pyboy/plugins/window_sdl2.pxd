@@ -32,3 +32,6 @@ cdef class WindowSDL2(PyBoyWindowPlugin):
     cdef object _window
     cdef object _sdlrenderer
     cdef object _sdltexturebuffer
+    
+    @cython.locals(now=int64_t, delay=int64_t)
+    cpdef bint frame_limiter(self, int) noexcept
