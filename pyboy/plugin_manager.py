@@ -20,9 +20,9 @@ registered_window_plugins = []
 registered_gamewrappers = []
 
 builtin_modules = [importlib.import_module("pyboy.plugins." + m.name) for m in iter_modules(plugins.__path__)]
-external_modules = [entry_point.load() for entry_point in importlib_metadata.entry_points(group="pyboy")]
+external_modules = [entry_point for entry_point in importlib_metadata.entry_points(group="pyboy")]
 
-for module in builtin_modules + external_modules:
+for module in builtin_modules + [m.load() for m in external_modules]:
 
     if hasattr(module, "_export_plugins"):
         plugin_names = getattr(module, "_export_plugins")
@@ -71,8 +71,8 @@ def window_names():
             yield plugin_cls.name
 
 
-def external_plugin_names():
-    return ", ".join([p.__name__ for p in external_modules])
+def external_module_names():
+    return ", ".join([f"{m.dist.name}-{m.dist.version}" for m in external_modules])
 
 
 class PluginManager:
@@ -80,9 +80,9 @@ class PluginManager:
         self.pyboy = pyboy
 
         if external_modules:
-            logger.info(f"External plugins loaded: {external_plugin_names()}")
+            logger.info(f"External modules loaded: {external_module_names()}")
         else:
-            logger.info("No external plugins found")
+            logger.info("No external modules found")
 
         self.enabled_plugins = self._instantiate_plugins(registered_plugins, pyboy, mb, pyboy_argv)
         self.enabled_window_plugins = self._instantiate_plugins(registered_window_plugins, pyboy, mb, pyboy_argv)
