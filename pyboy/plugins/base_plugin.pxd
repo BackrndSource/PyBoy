@@ -41,7 +41,6 @@ cdef class PyBoyWindowPlugin(PyBoyPlugin):
     cdef Renderer renderer
     cdef int64_t _ftime
 
-    @cython.locals(now=int64_t, delay=int64_t)
     cpdef bint frame_limiter(self, int) noexcept
     cpdef void set_title(self, str) noexcept
 
