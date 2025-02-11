@@ -6,8 +6,8 @@ setup(
     py_modules=["plugin"],
     # install_requires=["pyboy"],
     entry_points={
-        "pyboy_plugins": [
-            "gamewrapper_example = plugin:ExamplePyBoyGameWrapperPlugin",
+        "pyboy": [
+            "gamewrapper_example = plugin",
         ],
     },
 )
